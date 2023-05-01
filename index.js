@@ -362,9 +362,12 @@ app.get('/advancedSearch/:type/:areaMin/:areaMax/:floorMin/:floorMax/:placement'
 		const file = JSON.parse(data);
 		// Here we are printing the data.  
 		for(i=0;i<file.length;i++){ 
+			//console.log(file[i].Sahə)
 			var area = file[i].Sahə.match(/\d/g);
+			area = area.join("")
+			//console.log(area);
 			var aNumber =Number(area) 
-			if (type==all){
+			if (type=="all"){
 				if(aNumber<areaMax&aNumber>areaMin){ 
 					//push ad to the object 
 					myObject.push(file[i])  
@@ -376,7 +379,7 @@ app.get('/advancedSearch/:type/:areaMin/:areaMax/:floorMin/:floorMax/:placement'
 					})
 					console.log(file[i].url)
 					console.log(file[i].title) 
-					res.send("filtering by location "+file[i].url)
+				
 				}
 			}else{
 				if(aNumber<areaMax&aNumber>areaMin&type==file[i].Təmir){ 
@@ -390,7 +393,7 @@ app.get('/advancedSearch/:type/:areaMin/:areaMax/:floorMin/:floorMax/:placement'
 					})
 					console.log(file[i].url)
 					console.log(file[i].title) 
-					res.send("filtering by location "+file[i].url)
+				
 				}
 			}
 			

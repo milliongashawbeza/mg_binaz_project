@@ -121,7 +121,7 @@ app.get('/scrape_urls',(req,res)=>{
 //Filter by ownership owner or Agent 
 app.get('/filterByAdOwnership/:type',(req,res)=>{ 
 	var type = req.params.type 
-	var type = "mülkiyyətçi"
+	//var type = "mülkiyyətçi"
 	var a = [];
 	var x = JSON.stringify(a); 
 	fs.writeFileSync('filter_result.json', x, 'utf8');
@@ -144,7 +144,7 @@ app.get('/filterByAdOwnership/:type',(req,res)=>{
 				})
 				console.log(file[i].url)
 				console.log(file[i].title) 
-				res.send("filtering by ownership  "+file[i].url)
+				//res.send("filtering by ownership  "+file[i].url)
 			}
 		}
 		
@@ -158,7 +158,7 @@ app.get('/filterByAdOwnership/:type',(req,res)=>{
 
 app.get('/filterByPurchase/:type',(req,res)=>{ 
 	var type = req.params.type 
-	var type = "Kirayə"
+	//var type = "Kirayə"
 	var a = [];
 	var x = JSON.stringify(a); 
 	fs.writeFileSync('filter_result.json', x, 'utf8');
@@ -194,7 +194,7 @@ app.get('/filterByPurchase/:type',(req,res)=>{
 ////Filter by purchase building type or Apartment | new building |old building |Garder | office 
 app.get('/filterByBuildingtype/:type',(req,res)=>{
 	var type = req.params.type 
-	var type = "Köhnə tikili"
+	//var type = "Köhnə tikili"
 	//create an empty array
 	var a = [];
 	var x = JSON.stringify(a); 
@@ -322,7 +322,7 @@ app.get('/filterByLocation/:location',(req,res)=>{
 		const file = JSON.parse(data);
 		// Here we are printing the data.  
 		for(i=0;i<file.length;i++){
-			if(file[i].address.indexOf(location)){ 
+			if(file[i].address.match(location)){ 
 				//push ad to the object 
 				myObject.push(file[i])  
 				var newData = JSON.stringify(myObject);

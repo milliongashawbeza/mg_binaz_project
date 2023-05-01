@@ -12,8 +12,8 @@ var stringify = require('json-stringify');
 const fs = require('fs') 
 var upwork_project_ads = require('./upwork_project_ads.js') 
 //Pupeteer 
-const browserObject = require('./browser');
-const scraperController = require('./pageController');
+const browserObject = require('./browser.js');
+const scraperController = require('./pageController.js');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -119,40 +119,285 @@ app.get('/scrape_urls',(req,res)=>{
 })
 
 //Filter by ownership owner or Agent 
-app.get('/filterByAdOwnership/:tyoe',(req,res)=>{
+app.get('/filterByAdOwnership/:type',(req,res)=>{ 
+	var type = req.params.type 
+	var type = "mülkiyyətçi"
+	var a = [];
+	var x = JSON.stringify(a); 
+	fs.writeFileSync('filter_result.json', x, 'utf8');
+	var filter_result = fs.readFileSync('filter_result.json');
+	var myObject= JSON.parse(filter_result);
+	fs.readFile("output.json", function (err, data) {
+		// If there is any error this line will execute
+		if (err) throw err;
+		// Here we are converting the data to Javascript object
+		const file = JSON.parse(data);
+		// Here we are printing the data.  
+		for(i=0;i<file.length;i++){
+			if(file[i].owner==type){
+				myObject.push(file[i])  
+				var newData = JSON.stringify(myObject);
+				//write it to filer_result.json
+				fs.writeFile('filter_result.json', newData, (err) => {
+				if (err) reject(err)
+				console.log("File saved.")
+				})
+				console.log(file[i].url)
+				console.log(file[i].title) 
+				res.send("filtering by ownership  "+file[i].url)
+			}
+		}
+		
+	   
+	   // console.log(file[0]['url']);
+	}); 
 	res.send("filtering by ownership type ")
 	
 })
 //Filter by purchase type purchase or Rend  
 
-app.get('/filterByPurchase/:type',(req,res)=>{
-	res.send("filtering by purchase type ")
+app.get('/filterByPurchase/:type',(req,res)=>{ 
+	var type = req.params.type 
+	var type = "Kirayə"
+	var a = [];
+	var x = JSON.stringify(a); 
+	fs.writeFileSync('filter_result.json', x, 'utf8');
+	var filter_result = fs.readFileSync('filter_result.json');
+	var myObject= JSON.parse(filter_result);
+	fs.readFile("output.json", function (err, data) {
+		// If there is any error this line will execute
+		if (err) throw err;
+		// Here we are converting the data to Javascript object
+		const file = JSON.parse(data);
+		// Here we are printing the data.  
+		for(i=0;i<file.length;i++){
+			if(file[i].type==type){
+				myObject.push(file[i])  
+				var newData = JSON.stringify(myObject);
+				//write it to filer_result.json
+				fs.writeFile('filter_result.json', newData, (err) => {
+				if (err) reject(err)
+				console.log("File saved.")
+				})
+				console.log(file[i].url)
+				console.log(file[i].title) 
+				res.send("filtering by ownership type  "+file[i].url)
+			}
+		}
+		
+	   
+	   // console.log(file[0]['url']);
+	}); 
+
+	
 }) ; 
 ////Filter by purchase building type or Apartment | new building |old building |Garder | office 
-app.get('/filterByBuildingtype',(req,res)=>{
-	res.send("filtering by building type ")
+app.get('/filterByBuildingtype/:type',(req,res)=>{
+	var type = req.params.type 
+	var type = "Köhnə tikili"
+	//create an empty array
+	var a = [];
+	var x = JSON.stringify(a); 
+	fs.writeFileSync('filter_result.json', x, 'utf8');
+	var filter_result = fs.readFileSync('filter_result.json');
+	var myObject= JSON.parse(filter_result);
+	fs.readFile("output.json", function (err, data) {
+		// If there is any error this line will execute
+		if (err) throw err;
+		// Here we are converting the data to Javascript object
+		const file = JSON.parse(data);
+		// Here we are printing the data.  
+		for(i=0;i<file.length;i++){
+			if(file[i].Kateqoriya==type){
+				myObject.push(file[i])  
+				var newData = JSON.stringify(myObject);
+				//write it to filer_result.json
+				fs.writeFile('filter_result.json', newData, (err) => {
+				if (err) reject(err)
+				console.log("File saved.")
+				})
+				console.log(file[i].url)
+				console.log(file[i].title) 
+				res.send("filtering by category  "+file[i].url)
+			}
+		}
+		
+	   
+	   // console.log(file[0]['url']);
+	}); 
 })
 //Filter by number of room || 1 bed room | 2 bed room | 3 bed room 
-app.get('/filterByNumberOfRoom',(req,res)=>{
-	res.send("filtering by bed room  ")
+app.get('/filterByNumberOfRoom/:number',(req,res)=>{
+	var no_rooms = req.params.number 
+
+fs.readFile("output.json", function (err, data) {
+    // If there is any error this line will execute
+    if (err) throw err;
+    // Here we are converting the data to Javascript object
+    const file = JSON.parse(data);
+	//creating an empty arryay for filtered result 
+	var a = [];
+	var x = JSON.stringify(a); 
+	fs.writeFileSync('filter_result.json', x, 'utf8');
+	var filter_result = fs.readFileSync('filter_result.json');
+	var myObject= JSON.parse(filter_result); 
+
+    // Here we are printing the data.  
+	for(i=0;i<file.length;i++){
+		if(file[i].Otaq_sayı==no_rooms){ 
+			
+			myObject.push(file[i])  
+		var newData = JSON.stringify(myObject);
+			fs.writeFile('filter_result.json', newData, (err) => {
+				if (err) reject(err)
+				console.log("File saved.")
+				})
+			console.log(file[i].url)
+			console.log(file[i].title) 
+			
+		}
+	}
+	
+   // console.log(file[0]['url']);
+}); 
+res.write("filtering by bed room check filter_result.json")
 }) 
 // Filter by price min - max 
 app.get('/filterByPrice/:min/:max',(req,res)=>{
-	res.send("filtering by price Min and max   ")
+	var min = req.params.min;
+	var max = req.params.max;  
+	//create an empty array
+	var a = [];
+	var x = JSON.stringify(a); 
+	fs.writeFileSync('filter_result.json', x, 'utf8');
+	var filter_result = fs.readFileSync('filter_result.json');
+	var myObject= JSON.parse(filter_result);
+	fs.readFile("output.json", function (err, data) {
+		// If there is any error this line will execute
+		if (err) throw err;
+		// Here we are converting the data to Javascript object
+		const file = JSON.parse(data);
+		// Here we are printing the data.  
+		for(i=0;i<file.length;i++){
+			if(file[i].price<max & file[i].price>min){ 
+				//push ad to the object 
+				myObject.push(file[i])  
+				var newData = JSON.stringify(myObject);
+				//write it to filer_result.json
+				fs.writeFile('filter_result.json', newData, (err) => {
+				if (err) reject(err)
+				console.log("File saved.")
+				})
+				console.log(file[i].url)
+				console.log(file[i].title) 
+				res.send("filtering by min and max filter "+file[i].url)
+			}
+		}
+		
+	   
+	   // console.log(file[0]['url']);
+	}); 
+
 }) 
 // Filter by location Sheki | shamkir 
 app.get('/filterByLocation/:location',(req,res)=>{
-	res.send("filtering by location   ")
+	var location = req.params.location;
+	//create an empty array
+	var a = [];
+	var x = JSON.stringify(a); 
+	fs.writeFileSync('filter_result.json', x, 'utf8');
+	var filter_result = fs.readFileSync('filter_result.json');
+	var myObject= JSON.parse(filter_result);
+	fs.readFile("output.json", function (err, data) {
+		// If there is any error this line will execute
+		if (err) throw err;
+		// Here we are converting the data to Javascript object
+		const file = JSON.parse(data);
+		// Here we are printing the data.  
+		for(i=0;i<file.length;i++){
+			if(file[i].address.indexOf(location)){ 
+				//push ad to the object 
+				myObject.push(file[i])  
+				var newData = JSON.stringify(myObject);
+				//write it to filer_result.json
+				fs.writeFile('filter_result.json', newData, (err) => {
+				if (err) reject(err)
+				console.log("File saved.")
+				})
+				console.log(file[i].url)
+				console.log(file[i].title) 
+				res.send("filtering by location "+file[i].url)
+			}
+		}
+		
+	   
+	   // console.log(file[0]['url']);
+	}); 
 })
 // Advanced search 
-app.get('/advancedSearch/:type',(req,res)=>{
+app.get('/advancedSearch/:type/:areaMin/:areaMax/:floorMin/:floorMax/:placement',(req,res)=>{ 
+	var type = req.params.type;
+	var areaMin = req.params.areaMin;
+	var areaMax = req.params.areaMax;
+	var floorMin = req.params.floorMin;
+	var floorMax = req.params.floorMax;
+	//create an empty array
+	var a = [];
+	var x = JSON.stringify(a); 
+	fs.writeFileSync('filter_result.json', x, 'utf8');
+	var filter_result = fs.readFileSync('filter_result.json');
+	var myObject= JSON.parse(filter_result);
+	fs.readFile("output.json", function (err, data) {
+		// If there is any error this line will execute
+		if (err) throw err;
+		// Here we are converting the data to Javascript object
+		const file = JSON.parse(data);
+		// Here we are printing the data.  
+		for(i=0;i<file.length;i++){ 
+			var area = file[i].match(/\d/g);
+			var aNumber =Number(area.json("")) 
+			if (type==all){
+				if(aNumber<areaMax&aNumber>areaMin){ 
+					//push ad to the object 
+					myObject.push(file[i])  
+					var newData = JSON.stringify(myObject);
+					//write it to filer_result.json
+					fs.writeFile('filter_result.json', newData, (err) => {
+					if (err) reject(err)
+					console.log("File saved.")
+					})
+					console.log(file[i].url)
+					console.log(file[i].title) 
+					res.send("filtering by location "+file[i].url)
+				}
+			}else{
+				if(aNumber<areaMax&aNumber>areaMin&type==file[i].Təmir){ 
+					//push ad to the object 
+					myObject.push(file[i])  
+					var newData = JSON.stringify(myObject);
+					//write it to filer_result.json
+					fs.writeFile('filter_result.json', newData, (err) => {
+					if (err) reject(err)
+					console.log("File saved.")
+					})
+					console.log(file[i].url)
+					console.log(file[i].title) 
+					res.send("filtering by location "+file[i].url)
+				}
+			}
+			
+		}
+		
+	   
+	   // console.log(file[0]['url']);
+	}); 
 	res.send("filtering by location   ")
 })
 
 app.get('/fetch_urls',(req,res)=>{ 
     //Fetch urls 
     //and put all urls to urls file 
-   upwork_project_ads.fetchTitles().then((titles) => console.log(titles));
+ 	fetchTitles().then((titles) => console.log(titles));
     res.send(" Fetching Url"); 
 })
  

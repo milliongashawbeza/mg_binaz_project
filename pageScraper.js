@@ -132,7 +132,7 @@ const scraperObject = {
 			if(parameters.length==4){
 				data = 	'{ "url":"'+ad_url+'","title":"'+title_value+'","type":"'+type_value+'","price":"'+price_value+'","price_currency":"'+curr_value+'" ,"price_rent_value":"'+price_rent_value+'","price_curr_rent_value":"'+price_curr_rent_value+'","price_per_value":"'+price_per_value+'"'+
 		',"address":"'+address_value+'","lat":'+data_lat+',"lng":'+data_long+''+
-		',"Kateqoriya":"'+parameters[0][1]+'","Mərtəbə":"'+parameters[1][1]+'","Sahə":"'+parameters[2][1]+'","Otaq sayı":"'+parameters[3][1]+'","Təmir":""'+
+		',"Kateqoriya":"'+parameters[0][1]+'","Mərtəbə":"'+parameters[1][1]+'","Sahə":"'+parameters[2][1]+'","Otaq_sayı":"'+parameters[3][1]+'","Təmir":""'+
 		',"name":"'+name_value+'","owner":"'+owner_value+'","phone_no":"'+phone_no_value+'"'+
 		',"ad_number":'+ad_number+',"view":'+view+',"update":"'+update+'"'+
 		'}'; 
@@ -169,6 +169,7 @@ const scraperObject = {
 		var p = stringify(data) 
 		console.log(JSON.parse(p)) 
 		var parsed = JSON.parse(data) 
+		
 		var json = fs.readFileSync('output.json');
 		var myObject= JSON.parse(json);
 		myObject.push(parsed)  

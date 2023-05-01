@@ -151,7 +151,7 @@ app.get('/filterByAdOwnership/:type',(req,res)=>{
 	   
 	   // console.log(file[0]['url']);
 	}); 
-	res.send("filtering by ownership type ")
+	res.send("filtering by ownership type check filter_result.json ")
 	
 })
 //Filter by purchase type purchase or Rend  
@@ -181,7 +181,7 @@ app.get('/filterByPurchase/:type',(req,res)=>{
 				})
 				console.log(file[i].url)
 				console.log(file[i].title) 
-				res.send("filtering by ownership type  "+file[i].url)
+				
 			}
 		}
 		
@@ -189,7 +189,7 @@ app.get('/filterByPurchase/:type',(req,res)=>{
 	   // console.log(file[0]['url']);
 	}); 
 
-	
+	res.status(200).send("filtering by purchase type check filter_result.json")
 }) ; 
 ////Filter by purchase building type or Apartment | new building |old building |Garder | office 
 app.get('/filterByBuildingtype/:type',(req,res)=>{
@@ -218,13 +218,14 @@ app.get('/filterByBuildingtype/:type',(req,res)=>{
 				})
 				console.log(file[i].url)
 				console.log(file[i].title) 
-				res.send("filtering by category  "+file[i].url)
+				//res.send("filtering by category  "+file[i].url)
 			}
 		}
 		
 	   
 	   // console.log(file[0]['url']);
-	}); 
+	});  
+	res.status(200).send("filtering by building type filter_result.json")
 })
 //Filter by number of room || 1 bed room | 2 bed room | 3 bed room 
 app.get('/filterByNumberOfRoom/:number',(req,res)=>{
@@ -260,7 +261,7 @@ fs.readFile("output.json", function (err, data) {
 	
    // console.log(file[0]['url']);
 }); 
-res.write("filtering by bed room check filter_result.json")
+res.status(200).send("filtering by bed room check filter_result.json")
 }) 
 // Filter by price min - max 
 app.get('/filterByPrice/:min/:max',(req,res)=>{
@@ -279,7 +280,13 @@ app.get('/filterByPrice/:min/:max',(req,res)=>{
 		const file = JSON.parse(data);
 		// Here we are printing the data.  
 		for(i=0;i<file.length;i++){
-			if(file[i].price<max & file[i].price>min){ 
+			
+			var price  = file[i].price.replace(/\s/g, '');
+			
+			var p =Number(price)
+			console.log(file[i].price)
+			console.log(p)
+			if(p<max & p>min){ 
 				//push ad to the object 
 				myObject.push(file[i])  
 				var newData = JSON.stringify(myObject);
@@ -290,14 +297,14 @@ app.get('/filterByPrice/:min/:max',(req,res)=>{
 				})
 				console.log(file[i].url)
 				console.log(file[i].title) 
-				res.send("filtering by min and max filter "+file[i].url)
+				
 			}
 		}
 		
 	   
 	   // console.log(file[0]['url']);
 	}); 
-
+	res.status(200).send("filtering by min and max filter check filter_result.json")
 }) 
 // Filter by location Sheki | shamkir 
 app.get('/filterByLocation/:location',(req,res)=>{
@@ -326,13 +333,14 @@ app.get('/filterByLocation/:location',(req,res)=>{
 				})
 				console.log(file[i].url)
 				console.log(file[i].title) 
-				res.send("filtering by location "+file[i].url)
+			
 			}
 		}
 		
 	   
 	   // console.log(file[0]['url']);
-	}); 
+	});  
+	res.status(200).send("filtering by location filter_result.json")
 })
 // Advanced search 
 app.get('/advancedSearch/:type/:areaMin/:areaMax/:floorMin/:floorMax/:placement',(req,res)=>{ 
@@ -354,8 +362,8 @@ app.get('/advancedSearch/:type/:areaMin/:areaMax/:floorMin/:floorMax/:placement'
 		const file = JSON.parse(data);
 		// Here we are printing the data.  
 		for(i=0;i<file.length;i++){ 
-			var area = file[i].match(/\d/g);
-			var aNumber =Number(area.json("")) 
+			var area = file[i].Sahə.match(/\d/g);
+			var aNumber =Number(area) 
 			if (type==all){
 				if(aNumber<areaMax&aNumber>areaMin){ 
 					//push ad to the object 
@@ -391,7 +399,7 @@ app.get('/advancedSearch/:type/:areaMin/:areaMax/:floorMin/:floorMax/:placement'
 	   
 	   // console.log(file[0]['url']);
 	}); 
-	res.send("filtering by location   ")
+	res.status(200).send("advanced search check filter_result.json")
 })
 
 app.get('/fetch_urls',(req,res)=>{ 
